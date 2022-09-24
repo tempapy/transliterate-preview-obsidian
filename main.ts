@@ -143,9 +143,10 @@ export class Transliterate extends MarkdownRenderChild {
 			"~": "ँ"
 		}
 	}
+	
 	static slp1_vowels = "aAiIuUfFxXeEoO";
-	static slp1_consonants = "kKgGNcCjJYwWqQRL|tTdDnpPbBmyrlvSzsh";
-	static slp1_others = "'HZVM~";
+	static slp1_consonants  = "kKgGNcCjJYwWqQRL|tTdDnpPbBmyrlvSzsh";
+	static slp1_others  = "'HZVM~";
 	
 	text: string;
 
@@ -157,6 +158,20 @@ export class Transliterate extends MarkdownRenderChild {
 
 	onload() {
 		var text = this.text;
+
+		for (var i = 0; i < Object.keys(Transliterate.iast2slp1_table["3c"]).length; i++){
+			var c = Object.keys(Transliterate.iast2slp1_table["3c"])[i]
+			text = text.replace(new RegExp("("+c+")", "g"), Transliterate.iast2slp1_table["3c"][c])
+		}
+		for (var i = 0; i < Object.keys(Transliterate.iast2slp1_table["2c"]).length; i++){
+			var c = Object.keys(Transliterate.iast2slp1_table["2c"])[i]
+			text = text.replace(new RegExp("("+c+")", "g"), Transliterate.iast2slp1_table["2c"][c])
+		}
+		for (var i = 0; i < Object.keys(Transliterate.iast2slp1_table["1c"]).length; i++){
+			var c = Object.keys(Transliterate.iast2slp1_table["1c"])[i]
+			text = text.replace(new RegExp("("+c+")", "g"), Transliterate.iast2slp1_table["1c"][c])
+		}
+
 		function transcode_vowels(capture: string, match: string){
 			var output = match;
 			if (output == ""){
@@ -232,10 +247,10 @@ export class Transliterate extends MarkdownRenderChild {
 		}
 		
 
-		const emojiEl = this.containerEl.createSpan({
+		const transliteratedEl = this.containerEl.createSpan({
 			text: text
 		});
-		this.containerEl.replaceWith(emojiEl);
+		this.containerEl.replaceWith(transliteratedEl);
 	}
 }
 
